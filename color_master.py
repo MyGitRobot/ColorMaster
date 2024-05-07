@@ -4,10 +4,11 @@
 Program: Color Master
 Author: MrCrawL
 Created Time: 2024-04-28
-Last Modified: 2024-05-02
+Last Modified: 2024-05-07
 PS. 2024-05-01 by MrCrawL: Realize some basic functions
     2024-05-02 by MrCrawL: Optimize code and modify UI. Add color illustrator
     2024-05-03 by MrCrawL: Optimize UI
+    2024-05-07 by MrCrawL: Fix Show Color button bug
 """
 
 ''' TIP: Only Support Primary Screen '''
@@ -85,7 +86,7 @@ class Window(QWidget, Ui_Form):
         self.lineEdit_G.textChanged.connect(lambda: self.lineEdit_change(self.lineEdit_G))
         self.lineEdit_B.textChanged.connect(lambda: self.lineEdit_change(self.lineEdit_B))
         self.lineEdit_Hex.textChanged.connect(self.hex_change)
-        self.buttonShow.clicked.connect(self.get_input_rgb)
+        self.buttonShow.clicked.connect(self.click_rgb)
         self.buttonPick.clicked.connect(self.toggle_monitor)
         self.buttonRecord.clicked.connect(self.record_rgb)
         self.buttonSave.clicked.connect(self.save_log)
@@ -201,6 +202,13 @@ class Window(QWidget, Ui_Form):
         self.lineEdit_Hex.setText(self.to_hex(r, g, b))
         self.set_label_color(r, g, b)
         line_edit.selectAll()
+
+    def click_rgb(self):
+        r = self.validate_rgb(self.lineEdit_R)
+        g = self.validate_rgb(self.lineEdit_G)
+        b = self.validate_rgb(self.lineEdit_B)
+        self.lineEdit_Hex.setText(self.to_hex(r, g, b))
+        self.set_label_color(r, g, b)
 
     def get_input_hex(self):
         input_string = self.lineEdit_Hex.text().upper()
